@@ -22,15 +22,51 @@ const sendError = (err, res) => {
 // Response handling
 let response = {
     status: 200,
-    data: [],
+    data: {},
     message: null
 };
 
+let playerCards = {};
+
+let game = {
+    status: "Not Started",
+    currentRound: [],
+    nextPlayerIndex: 0,
+    players: [],
+    statusMessage: ""
+}
+
+function addPalyer(name) {
+    let player = game.players.filter(n => n == name)[0];
+    if(!!name && !player) {
+        game.players.push(name);
+        playerCards[name] = [];
+    };
+}
+
 // Get users
-router.get('/users', (req, res) => {
-    response.data = [{
-        "Name": "Hari"
-    }];
+router.get('/game', (req, res) => {
+    let playerName = req.query.p;
+    let player = game.players.filter(n => n == playerName)[0];
+    let cardCounts = {};
+    if(!!player){
+        for(var name in playerCards) {
+            cardCounts[name] = playerCards[name].length;
+        }
+        response.data = {
+            game: game,
+            cardCounts: cardCounts,
+            cards: playerCards[playerName].cards
+        };
+    }
+    res.json(response);
+});
+
+
+router.post('/users', (req, res) => {
+    let palyerName = req.query.p;
+    addPalyer(palyerName);
+    response.data = {};
     res.json(response);
 });
 
