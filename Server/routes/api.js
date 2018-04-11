@@ -28,6 +28,8 @@ let response = {
 
 let playerCards = {};
 
+
+
 let game = {
     status: "Not Started",
     currentRound: [],
@@ -36,12 +38,37 @@ let game = {
     statusMessage: ""
 }
 
+function getDeckOfCards() {
+  let cards = [];
+  let types = ["S", "C", "H", "D"];
+  for (let type in types) {
+    for (let num = 1; num <= 13; num++) {
+      cards.push(type + "-" + num);
+    }
+  }
+}
+
 function addPalyer(name) {
     let player = game.players.filter(n => n == name)[0];
     if(!!name && !player) {
         game.players.push(name);
         playerCards[name] = [];
     };
+}
+
+function shuffle(array) {
+  var ctr = array.length, temp, index;
+  while (ctr > 0) {
+    // Pick a random index
+    index = Math.floor(Math.random() * ctr);
+    // Decrease ctr by 1
+    ctr--;
+    // And swap the last element with it
+    temp = array[ctr];
+    array[ctr] = array[index];
+    array[index] = temp;
+  }
+  return array;
 }
 
 // Get users
@@ -62,8 +89,28 @@ router.get('/game', (req, res) => {
     res.json(response);
 });
 
+router.post('/game/start', (req, res) => {
+  if (game.status != "Started") {
+    var cards = getDeckOfCards();
+    cards = shuffle(cards);
+    while (cards.length > 0) {
+      for (var player in game.players) {
+        if (!playerCards[player]) {
+          playerCards[player] = [];
+        }
+        if (cards.length == 0) {
+          break;
+        }
+        playerCards[player].push(cards.pop());
+      }
+    }
+    response.data = {};
+    res.json(response);
+  }
+});
 
-router.post('/users', (req, res) => {
+
+router.post('/players', (req, res) => {
     let palyerName = req.query.p;
     addPalyer(palyerName);
     response.data = {};

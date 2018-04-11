@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Promise } from 'q';
 
 @Injectable()
 export class DataService {
@@ -10,9 +11,24 @@ export class DataService {
 
   constructor(private _http: Http) { }
 
-  public getUsers() {
-    return this._http.get("/api/users")
-      .map(result => this.result = result.json().data);
+  public getGame(playerName) {
+    var promise = Promise((resolve, reject) => {
+      return this._http.get("/api/game?p=" + playerName)
+        .toPromise().then(
+          result => resolve(result.json().data),
+          () => reject("error"));
+    });
+    return promise;
+  }
+
+  public joinGame(playerName) {
+    var promise = Promise((resolve, reject) => {
+      return this._http.post("/api/players?p=" + playerName, null)
+        .toPromise().then(
+          result => resolve(result.json().data),
+          () => reject("error"));
+    });
+    return promise;
   }
 
 }
