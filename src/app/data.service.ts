@@ -31,4 +31,39 @@ export class DataService {
     return promise;
   }
 
+  public startGame() {
+    var promise = Promise((resolve, reject) => {
+      return this._http.post("/api/game/start", null)
+        .toPromise().then(
+          result => resolve(result.json().data),
+          () => reject("error"));
+    });
+    return promise;
+  }
+
+  public startRound() {
+    var promise = Promise((resolve, reject) => {
+      return this._http.post("/api/round/start", null)
+        .toPromise().then(
+          result => resolve(result.json().data),
+          () => reject("error"));
+    });
+    return promise;
+  }
+
+  public play(name, card) {
+    var promise = Promise((resolve, reject) => {
+      return this._http.post("/api/round/start", {p: name, card: card})
+        .toPromise().then(
+          result => resolve(result.json().data),
+          () => reject("error"));
+    });
+    return promise;
+  }
+
+
+
+
+
+
 }

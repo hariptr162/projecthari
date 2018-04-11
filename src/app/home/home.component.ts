@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataService } from './././data.service';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-home',
@@ -9,14 +9,14 @@ import { DataService } from './././data.service';
 })
 export class HomeComponent implements OnInit {
   name: string="";
-  constructor(private _router: Router, private _dataService: DateSer) { }
+  constructor(private _router: Router, private _dataService: DataService) { }
 
   ngOnInit() {
   }
 
   go() {
-
-    this._router.navigate(["welcome", this.name]);
+    this._dataService.joinGame(this.name).then(() => {
+      this._router.navigate(["game", this.name]);
+    });
   }
-
 }
