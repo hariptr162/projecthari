@@ -12,7 +12,7 @@ export class DataService {
   constructor(private _http: Http) { }
 
   public getGame(playerName) {
-    var promise = Promise((resolve, reject) => {
+    var promise = Promise<any>((resolve, reject) => {
       return this._http.get("/api/game?p=" + playerName)
         .toPromise().then(
           result => resolve(result.json().data),
@@ -42,7 +42,7 @@ export class DataService {
   }
 
   public startRound() {
-    var promise = Promise((resolve, reject) => {
+    var promise = Promise<any>((resolve, reject) => {
       return this._http.post("/api/round/start", null)
         .toPromise().then(
           result => resolve(result.json().data),

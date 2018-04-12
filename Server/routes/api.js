@@ -155,17 +155,26 @@ router.post('/play', (req, res) => {
         cardType = game.currentRound[0].card.type;
     }
     
-    if(cardType != cardTypeIn) {
-        game.CurrentRoundEnded = true;
-        game.message = "Current round ended. Rejected by " + playerName + " Start new round."
-    }
-    else if(game.currentRound.length == game.players.length) {
-        game.CurrentRoundEnded = true;
-        game.message = "Current round ended";
+    if (cardType != cardTypeIn) {
+      game.CurrentRoundEnded = true;
+      game.message = "Current round ended. Rejected by " + playerName + " Start new round."
     }
     else {
+      while (game.nextPlayerIndex < game.players.length) {
         game.nextPlayerIndex += 1;
-        game.message = game.players[game.nextPlayerIndex] + "'s turn."; 
+        if (playerCards[this.game.players[game.nextPlayerIndex]].length > 0) {
+          break;
+        }
+      }
+      if (game.nextPlayerIndex >= game.players.length) {
+          game.CurrentRoundEnded = true;
+          game.message = "Current round ended."
+      }
+    }
+    let remaining = game.players.filter((p) => playerCards[p].length > 0);
+    if (remaining.length == 1) {
+      game.message = "Game Ended. " + remaining[0] + " is the loser."
+      game.status = "Ended";
     }
     response.data = {};
     res.json(response);
