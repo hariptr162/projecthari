@@ -53,7 +53,7 @@ export class DataService {
 
   public play(name, card) {
     var promise = Promise((resolve, reject) => {
-      return this._http.post("/api/round/start", {p: name, card: card})
+      return this._http.post("/api/play", {p: name, card: card})
         .toPromise().then(
           result => resolve(result.json().data),
           () => reject("error"));

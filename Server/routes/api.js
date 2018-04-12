@@ -50,7 +50,7 @@ function getDeckOfCards() {
   for (let type in types) {
     for (let num = 2; num <= 14; num++) {
       cards.push( {
-          type: type,
+          type: types[type],
           number: num
       });
     }
@@ -82,7 +82,7 @@ function shuffle(array) {
 }
 
 function removeCardFromPlayer(playerName, card) {
-    playerCards[playerName] = palyerCards.filter(n => n.type != card.type || n.number != card.number);
+    playerCards[playerName] = playerCards[playerName].filter(n => n.type != card.type || n.number != card.number);
 }
 
 // Get users
@@ -98,7 +98,7 @@ router.get('/game', (req, res) => {
         response.data = {
             game: game,
             cardCounts: cardCounts,
-            cards: playerCards[playerName].cards
+            cards: playerCards[playerName]
         };
     }
     res.json(response);
@@ -120,8 +120,8 @@ router.post('/game/start', (req, res) => {
         }
         var card = cards.pop();
         playerCards[player].push(card);
-        if(card.type == "S" && card.number == 13) {
-            game.nextPlayerIndex = index;
+        if(card.type == "S" && card.number == 14) {
+            game.nextPlayerIndex = parseInt(index);
         }
       }
     }
@@ -142,7 +142,7 @@ router.post('/players', (req, res) => {
 
 
 router.post('/play', (req, res) => {
-    let palyerName = req.body.p;
+    let playerName = req.body.p;
     let card = req.body.card;
     let cardTypeIn = card.type;
     let cardType = cardTypeIn;
@@ -156,18 +156,21 @@ router.post('/play', (req, res) => {
     }
     
     if (cardType != cardTypeIn) {
-      game.CurrentRoundEnded = true;
+      game.currentRoundEnded = true;
       game.message = "Current round ended. Rejected by " + playerName + " Start new round."
     }
     else {
-      while (game.nextPlayerIndex < game.players.length) {
-        game.nextPlayerIndex += 1;
-        if (playerCards[this.game.players[game.nextPlayerIndex]].length > 0) {
+      game.nextPlayerIndex += 1;
+      game.nextPlayerIndex = game.nextPlayerIndex % game.players.length;
+      while (game.players[game.nextPlayerIndex] != playerName) {
+        if (playerCards[game.players[game.nextPlayerIndex]].length > 0) {
           break;
         }
+        game.nextPlayerIndex += 1;
+        game.nextPlayerIndex = game.nextPlayerIndex % game.players.length;
       }
-      if (game.nextPlayerIndex >= game.players.length) {
-          game.CurrentRoundEnded = true;
+      if (game.players[game.nextPlayerIndex] == game.currentRound[0].player) {
+          game.currentRoundEnded = true;
           game.message = "Current round ended."
       }
     }

@@ -14,8 +14,8 @@ export class GameComponent implements OnInit {
   private game: any;
   private myCards: any;
   private cardCounts: any;
-  private cardTransform: any = { 11: "J", 12: "Q", 13: "A" };
-
+  private cardTransform: any = { 11: "J", 12: "Q", 13: "K", 14: "A" };
+  private cardTypes: string[] = ["S", "C", "D", "H"];
   constructor(
     private _dataService: DataService,
     private route: ActivatedRoute) {
@@ -51,8 +51,8 @@ export class GameComponent implements OnInit {
         }
         this.myCards = myCards;
       });
-      this.getGame();
-    }, 10000);
+      //this.getGame();
+    }, 1);
   }
 
   private startGame() {
