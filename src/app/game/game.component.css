@@ -1,0 +1,13 @@
+a.card {
+  display: block;
+  height: 40px;
+  background-color: brown;
+  text-align: center;
+  margin: 10px;
+  width: 50px;
+}
+
+div.column {
+  display: inline-block;
+  border:1px solid brown;
+}

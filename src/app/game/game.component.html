@@ -1,3 +1,23 @@
-<p>
-  game works!
-</p>
+<h1>Hi {{playerName}}</h1>
+<hr>
+<button ng-show="game && game.status != 'Started'"  (click)="startGame()" >Start new Game</button>
+<button ng-show="game && game.status == 'Started' && game.currentRoundEnded"  (click)="startRound()" >Start new Round</button>
+<hr>
+<h1>My Cards</h1>
+<hr>
+<div>
+  <div class="column" ng-for="let cardType of myCards">
+    <a ng-for="let card of myCards[cardType]" (click)="paly(card)">{{getCardDisplay(card)}}</a>
+  </div>
+</div>
+<hr>
+<h1>Players</h1>
+<hr>
+<div ng-for="let player of game.players">
+  <div class="column">{{player + ' (' + cardCounts[player] + ')'}}</div>
+  <div class="column">{{getCurrentRoundCard(player)}}</div>
+</div>
+
+
+
+

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { ActivatedRoute } from '@angular/router';
+import { Type } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-game',
@@ -13,6 +14,7 @@ export class GameComponent implements OnInit {
   private game: any;
   private myCards: any;
   private cardCounts: any;
+  private cardTransform: any = { 11: "J", 12: "Q", 13: "A" };
 
   constructor(
     private _dataService: DataService,
@@ -63,6 +65,17 @@ export class GameComponent implements OnInit {
 
   private startRound() {
     this._dataService.startRound();
+  }
+
+  private getCardDisplay(card) {
+    return ((this.cardTransform[card.number] ? this.cardTransform[card.number] : card.number) + " " + card.type);
+  }
+
+  private getCurrentRoundCard(player: string) {
+    var card = this.game.currentRound.filter(n => n.player == player)[0];
+    if (!!card) {
+      return this.getCardDisplay(card.card);
+    }
   }
 
 }
