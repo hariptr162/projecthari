@@ -31,7 +31,7 @@ export class GameComponent implements OnInit {
     this.getGame();
   }
 
-  private getGame() {
+  public getGame() {
     setTimeout(() => {
       this._dataService.getGame(this.playerName).then((data) => {
         this.game = data.game;
@@ -61,23 +61,23 @@ export class GameComponent implements OnInit {
     }, 1);
   }
 
-  private startGame() {
+  public startGame() {
     this._dataService.startGame();
   }
 
-  private paly(card) {
+  public paly(card) {
     this._dataService.play(this.playerName, card);
   }
 
-  private startRound() {
+  public startRound() {
     this._dataService.startRound();
   }
 
-  private getCardDisplay(card) {
+  public getCardDisplay(card) {
     return ((this.cardTransform[card.number] ? this.cardTransform[card.number] : card.number) + " " + card.type);
   }
 
-  private getCurrentRoundCard(player: string) {
+  public getCurrentRoundCard(player: string) {
     if (!!this.currentCards[player]) {
       return this.getCardDisplay(this.currentCards[player]);
     }
