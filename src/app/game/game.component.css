@@ -3,7 +3,6 @@ a.card, div.card {
   height: 20px;
   text-align: center;
   margin: 5px;
-  width: 50px;
   padding: 5px;
 }
 
@@ -11,6 +10,7 @@ a.C, a.S, div.C, div.S {
   color: black;
   border: 1px solid black;
   cursor: pointer;
+  width: 50px;
 }
 
 a.H, a.D, div.H, div.D {
@@ -23,6 +23,12 @@ div.column {
   border:1px solid silver;
   vertical-align: top;
   margin:2px;
+}
+
+div.player
+{
+  min-width: 400px;
+  font-size: 1em;
 }
 
 div.header

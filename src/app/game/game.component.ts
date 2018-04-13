@@ -10,12 +10,13 @@ import { Type } from '@angular/compiler/src/output/output_ast';
 })
 export class GameComponent implements OnInit {
 
-  private playerName: string;
-  private game: any;
-  private myCards: any;
-  private cardCounts: any;
-  private cardTransform: any = { 11: "J", 12: "Q", 13: "K", 14: "A" };
-  private cardTypes: string[] = ["S", "C", "D", "H"];
+  public playerName: string;
+  public game: any;
+  public myCards: any;
+  public cardCounts: any;
+  public cardTransform: any = { 11: "J", 12: "Q", 13: "K", 14: "A" };
+  public cardTypes: string[] = ["S", "C", "D", "H"];
+  public currentCards: any = {};
   constructor(
     private _dataService: DataService,
     private route: ActivatedRoute) {
@@ -50,6 +51,11 @@ export class GameComponent implements OnInit {
           myCards[type].sort((a, b) => a.number - b.number);
         }
         this.myCards = myCards;
+        for (var playeri in this.game.players) {
+          var player = this.game.players[playeri];
+          var round = this.game.currentRound.filter(n => n.player == player)[0];
+          this.currentCards[player] = round ? round.card: undefined;
+        }
       });
       //this.getGame();
     }, 1);
@@ -72,10 +78,10 @@ export class GameComponent implements OnInit {
   }
 
   private getCurrentRoundCard(player: string) {
-    var card = this.game.currentRound.filter(n => n.player == player)[0];
-    if (!!card) {
-      return this.getCardDisplay(card.card);
+    if (!!this.currentCards[player]) {
+      return this.getCardDisplay(this.currentCards[player]);
     }
+    return "";
   }
 
 }

@@ -15,8 +15,8 @@
 <div class="header">Players</div>
 <hr>
 <div *ngFor="let player of game.players">
-  <div class="column">{{player + ' (' + cardCounts[player] + ')'}}</div>
-  <div class="column">{{getCurrentRoundCard(player)}}</div>
+  <div class="column"><div class="card player">{{player + ' (' + cardCounts[player] + ')'}}</div></div>
+  <div class="column"><div class="card" ng-class="!!currentCards[player] ? currentCards[player].type: ''" *ngIf="!!currentCards[player]" >{{getCurrentRoundCard(player)}}</div></div>
 </div>
 
 
