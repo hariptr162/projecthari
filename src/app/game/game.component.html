@@ -2,18 +2,17 @@
 <button *ngIf="game && game.status != 'Started'"  (click)="startGame()" >Start new Game</button>
 <button *ngIf="game && game.status == 'Started' && game.currentRoundEnded"  (click)="startRound()" >Start new Round</button>
 <button (click)="getGame()" >Refresh</button>
-<hr>
-<h1>My Cards</h1>
+<div class="header">My Cards</div>  
 <hr>
 <div>
   <div class="column" *ngFor="let cardType of cardTypes">
     <div *ngFor="let card of myCards[cardType]">
-        <a class="card" (click)="paly(card)">{{getCardDisplay(card)}}</a>
+        <a class="card {{card.type}}" (click)="paly(card)">{{getCardDisplay(card)}}</a>
     </div>
   </div>
 </div>
 <hr>
-<h1>Players</h1>
+<div class="header">Players</div>
 <hr>
 <div *ngFor="let player of game.players">
   <div class="column">{{player + ' (' + cardCounts[player] + ')'}}</div>

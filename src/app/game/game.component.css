@@ -1,13 +1,37 @@
-a.card {
+a.card, div.card {
   display: block;
-  height: 40px;
-  background-color: brown;
+  height: 20px;
   text-align: center;
-  margin: 10px;
+  margin: 5px;
   width: 50px;
+  padding: 5px;
+}
+
+a.C, a.S, div.C, div.S {
+  color: black;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+a.H, a.D, div.H, div.D {
+  color: red;
+  border: 1px solid red;
 }
 
 div.column {
   display: inline-block;
-  border:1px solid brown;
+  border:1px solid silver;
+  vertical-align: top;
+  margin:2px;
+}
+
+div.header
+{
+  text-align: center;
+  font-size: 1.2em;
+  background-color: gray;
+  height: 20px;
+  padding: 5px;
+  margin: 5px 0px 5px 0px;
+  color: white;
 }
