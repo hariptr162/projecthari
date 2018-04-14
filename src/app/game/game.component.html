@@ -1,4 +1,4 @@
-<h1>Hi {{playerName}}</h1>
+<h1>{{getMessage()}}</h1>
 <button *ngIf="game && game.status != 'Started'"  (click)="startGame()" >Start new Game</button>
 <button *ngIf="game && game.status == 'Started' && game.currentRoundEnded"  (click)="startRound()" >Start new Round</button>
 <button (click)="getGame()" >Refresh</button>

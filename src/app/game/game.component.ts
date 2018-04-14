@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { DataService } from '../data.service';
 import { ActivatedRoute } from '@angular/router';
 import { Type } from '@angular/compiler/src/output/output_ast';
+import {Observable} from 'rxjs/Rx'
 
 @Component({
   selector: 'app-game',
@@ -19,20 +20,35 @@ export class GameComponent implements OnInit {
   public currentCards: any = {};
   constructor(
     private _dataService: DataService,
-    private route: ActivatedRoute) {
-    route.params.subscribe(res => { this.Init(res.name); });
+    private route: ActivatedRoute,
+    private changeDet: ChangeDetectorRef) {
+    route.params.subscribe(res => this.Init(res.name));
   }
 
   ngOnInit() {
   }
 
+  public getMessage() {
+    return this.game ? this.game.message : "";
+  }
+
   private Init(playerName: string) {
     this.playerName = playerName;
     this.getGame();
+    this.StartTimer();
+
+  }
+
+  public StartTimer() {
+    setTimeout(() => this.refreshTimer(), 6000);
+  }
+
+  public refreshTimer() {
+    this.getGame();
+    this.StartTimer();
   }
 
   public getGame() {
-    setTimeout(() => {
       this._dataService.getGame(this.playerName).then((data) => {
         this.game = data.game;
         this.cardCounts = data.cardCounts;
@@ -56,9 +72,8 @@ export class GameComponent implements OnInit {
           var round = this.game.currentRound.filter(n => n.player == player)[0];
           this.currentCards[player] = round ? round.card: undefined;
         }
+        this.changeDet.detectChanges();
       });
-      //this.getGame();
-    }, 1);
   }
 
   public startGame() {

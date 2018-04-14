@@ -10,12 +10,14 @@ a.C, a.S, div.C, div.S {
   color: black;
   border: 1px solid black;
   cursor: pointer;
-  width: 50px;
+  width: 35px;
 }
 
 a.H, a.D, div.H, div.D {
   color: red;
   border: 1px solid red;
+  cursor: pointer;
+  width: 35px;
 }
 
 div.column {
@@ -27,7 +29,7 @@ div.column {
 
 div.player
 {
-  min-width: 400px;
+  min-width: 150px;
   font-size: 1em;
 }
 

@@ -127,7 +127,7 @@ router.post('/game/start', (req, res) => {
       }
     }
     game.status = "Started";
-    game.message = "Game Started!. Hi " + game.players[0] + " its your turn!"
+    game.message = "Game Started!." + game.players[0] + ", its your turn!"
   }
     response.data = {};
     res.json(response);
@@ -174,6 +174,9 @@ router.post('/play', (req, res) => {
           game.currentRoundEnded = true;
           game.message = "Current round ended."
       }
+      else {
+          game.message = game.players[game.nextPlayerIndex] + "'s turn.";
+      }
     }
     let remaining = game.players.filter((p) => playerCards[p].length > 0);
     if (remaining.length == 1) {
@@ -187,7 +190,7 @@ router.post('/play', (req, res) => {
 router.post('/round/start', (req, res) => {
     if(game.currentRoundEnded) {
         var rejectCard;
-        var currLength = game.currentRound.length-1;
+        var currLength = game.currentRound.length;
         if(game.currentRound[currLength-1].card.type != game.currentRound[currLength-2].card.type) {
             rejectCard = game.currentRound.pop();
         }
