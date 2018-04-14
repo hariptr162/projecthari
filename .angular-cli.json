@@ -12,7 +12,11 @@
         "favicon.ico",
         "package.json",
         "server.js",
-        "api.js"
+        "api.js",
+        "S.png",
+        "C.png",
+        "D.png",
+        "H.png"
       ],
       "index": "index.html",
       "main": "main.ts",

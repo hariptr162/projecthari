@@ -127,7 +127,7 @@ router.post('/game/start', (req, res) => {
       }
     }
     game.status = "Started";
-    game.message = "Game Started!." + game.players[0] + ", its your turn!"
+    game.message = "Game Started!." + game.players[game.nextPlayerIndex] + ", its your turn!"
   }
     response.data = {};
     res.json(response);
@@ -144,44 +144,46 @@ router.post('/players', (req, res) => {
 
 router.post('/play', (req, res) => {
     let playerName = req.body.p;
-    let card = req.body.card;
-    let cardTypeIn = card.type;
-    let cardType = cardTypeIn;
-    removeCardFromPlayer(playerName, card);
-    game.currentRound.push({
-        player: playerName,
-        card: card
-    });
-    if(game.currentRound && game.currentRound.length > 0) {
-        cardType = game.currentRound[0].card.type;
-    }
-    
-    if (cardType != cardTypeIn) {
-      game.currentRoundEnded = true;
-      game.message = "Current round ended. Rejected by " + playerName + " Start new round."
-    }
-    else {
-      game.nextPlayerIndex += 1;
-      game.nextPlayerIndex = game.nextPlayerIndex % game.players.length;
-      while (game.players[game.nextPlayerIndex] != playerName) {
-        if (playerCards[game.players[game.nextPlayerIndex]].length > 0) {
-          break;
+    if(!!playerName && game.players[game.nextPlayerIndex] == playerName) {
+        let card = req.body.card;
+        let cardTypeIn = card.type;
+        let cardType = cardTypeIn;
+        removeCardFromPlayer(playerName, card);
+        game.currentRound.push({
+            player: playerName,
+            card: card
+        });
+        if(game.currentRound && game.currentRound.length > 0) {
+            cardType = game.currentRound[0].card.type;
         }
-        game.nextPlayerIndex += 1;
-        game.nextPlayerIndex = game.nextPlayerIndex % game.players.length;
-      }
-      if (game.players[game.nextPlayerIndex] == game.currentRound[0].player) {
-          game.currentRoundEnded = true;
-          game.message = "Current round ended."
-      }
-      else {
-          game.message = game.players[game.nextPlayerIndex] + "'s turn.";
-      }
-    }
-    let remaining = game.players.filter((p) => playerCards[p].length > 0);
-    if (remaining.length == 1) {
-      game.message = "Game Ended. " + remaining[0] + " is the loser."
-      game.status = "Ended";
+        
+        if (cardType != cardTypeIn) {
+            game.currentRoundEnded = true;
+            game.message = "Current round ended. Rejected by " + playerName + " Start new round."
+        }
+        else {
+            game.nextPlayerIndex += 1;
+            game.nextPlayerIndex = game.nextPlayerIndex % game.players.length;
+            while (game.players[game.nextPlayerIndex] != playerName) {
+                if (playerCards[game.players[game.nextPlayerIndex]].length > 0) {
+                    break;
+                }
+                game.nextPlayerIndex += 1;
+                game.nextPlayerIndex = game.nextPlayerIndex % game.players.length;
+            }
+            if (game.players[game.nextPlayerIndex] == game.currentRound[0].player) {
+                game.currentRoundEnded = true;
+                game.message = "Current round ended."
+            }
+            else {
+                game.message = game.players[game.nextPlayerIndex] + "'s turn.";
+            }
+        }
+        let remaining = game.players.filter((p) => playerCards[p].length > 0);
+        if (remaining.length == 1) {
+            game.message = "Game Ended. " + remaining[0] + " is the loser."
+            game.status = "Ended";
+        }
     }
     response.data = {};
     res.json(response);
@@ -193,14 +195,22 @@ router.post('/round/start', (req, res) => {
         var currLength = game.currentRound.length;
         if(game.currentRound[currLength-1].card.type != game.currentRound[currLength-2].card.type) {
             rejectCard = game.currentRound.pop();
+            currLength = currLength - 1;
         }
         game['currentRound'].sort((a, b) => a.card.number - b.card.number);
-        var highPlayer = game.currentRound.pop();
+        var highPlayer = game.currentRound[currLength-1];
         game.nextPlayerIndex = game.players.indexOf(highPlayer.player);
         while(game.currentRound.length > 0){
-            playerCards[highPlayer.player].push(game.currentRound.pop().card);
+            var card = game.currentRound.pop().card;
+            if(!!rejectCard) {
+                playerCards[highPlayer.player].push(card);
+            }
+        }
+        if(!!rejectCard) {
+            playerCards[highPlayer.player].push(rejectCard.card);
         }
         game.message = game.players[game.nextPlayerIndex] + "'s turn."; 
+        game.currentRoundEnded = false;
     }
     response.data = {};
     res.json(response);

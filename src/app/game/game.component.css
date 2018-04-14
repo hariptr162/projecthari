@@ -1,6 +1,6 @@
 a.card, div.card {
   display: block;
-  height: 20px;
+  height: 24px;
   text-align: center;
   margin: 5px;
   padding: 5px;
@@ -10,14 +10,22 @@ a.C, a.S, div.C, div.S {
   color: black;
   border: 1px solid black;
   cursor: pointer;
-  width: 35px;
+  width: 40px;
 }
 
 a.H, a.D, div.H, div.D {
   color: red;
   border: 1px solid red;
   cursor: pointer;
-  width: 35px;
+  width: 40px;
+}
+
+.card img {
+  height: 15px;
+  width: 15;
+  top:2px;
+  left:2px;
+  position: relative;
 }
 
 div.column {
@@ -42,4 +50,9 @@ div.header
   padding: 5px;
   margin: 5px 0px 5px 0px;
   color: white;
+}
+
+div.no-card
+{
+  background-color: grey;
 }

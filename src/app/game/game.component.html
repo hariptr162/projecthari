@@ -7,7 +7,7 @@
 <div>
   <div class="column" *ngFor="let cardType of cardTypes">
     <div *ngFor="let card of myCards[cardType]">
-        <a class="card {{card.type}}" (click)="paly(card)">{{getCardDisplay(card)}}</a>
+        <a class="card {{card.type}}" (click)="paly(card)">{{getCardDisplay(card)}} <img src="{{card.type}}.png" /> </a>
     </div>
   </div>
 </div>
@@ -15,8 +15,8 @@
 <div class="header">Players</div>
 <hr>
 <div *ngFor="let player of game.players">
-  <div class="column"><div class="card player">{{player + ' (' + cardCounts[player] + ')'}}</div></div>
-  <div class="column"><div class="card" ng-class="!!currentCards[player] ? currentCards[player].type: ''" *ngIf="!!currentCards[player]" >{{getCurrentRoundCard(player)}}</div></div>
+  <div class="column"><div class="card player" ng-class="cardCounts[player] > 0 ? '': 'no-card'"  >{{player + ' (' + cardCounts[player] + ')'}}</div></div>
+  <div class="column"><div class="card" ng-class="!!currentCards[player] ? currentCards[player].type: ''" *ngIf="!!currentCards[player]" >{{getCurrentRoundCard(player)}}<img src="{{currentCards[player].type}}.png" /></div></div>
 </div>
 
 

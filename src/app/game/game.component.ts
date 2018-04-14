@@ -45,7 +45,7 @@ export class GameComponent implements OnInit {
 
   public refreshTimer() {
     this.getGame();
-    this.StartTimer();
+    //this.StartTimer();
   }
 
   public getGame() {
@@ -89,7 +89,7 @@ export class GameComponent implements OnInit {
   }
 
   public getCardDisplay(card) {
-    return ((this.cardTransform[card.number] ? this.cardTransform[card.number] : card.number) + " " + card.type);
+    return (this.cardTransform[card.number] ? this.cardTransform[card.number] : card.number);
   }
 
   public getCurrentRoundCard(player: string) {
