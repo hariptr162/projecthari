@@ -1,0 +1,16 @@
+{
+  "name": "myng",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "private": true,
+  "dependencies": {
+    "core-js": "^2.4.1",
+    "express": "^4.16.3",
+    "rxjs": "^5.5.6",
+    "zone.js": "^0.8.19"
+  },
+  "devDependencies": {}
+}
