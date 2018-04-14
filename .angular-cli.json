@@ -11,7 +11,8 @@
         "assets",
         "favicon.ico",
         "package.json",
-        "server.js"
+        "server.js",
+        "api.js"
       ],
       "index": "index.html",
       "main": "main.ts",
