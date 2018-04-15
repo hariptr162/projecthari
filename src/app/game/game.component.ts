@@ -45,7 +45,7 @@ export class GameComponent implements OnInit {
 
   public refreshTimer() {
     this.getGame();
-    //this.StartTimer();
+    this.StartTimer();
   }
 
   public getGame() {
